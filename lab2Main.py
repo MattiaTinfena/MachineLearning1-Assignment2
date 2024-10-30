@@ -22,13 +22,13 @@ w = oneDimLRM(dataEx)
 
 # Plot results
 
-# plt.scatter(rowEx, colEx, marker='x') 
-# x_vals = np.linspace(min(rowEx), max(rowEx), 100)
-# y_vals = w * x_vals
-# plt.plot(x_vals, y_vals, color = "Red")
-# plt.xlabel("Car weight (lbs/1000)")
-# plt.ylabel("mpg")
-# plt.show()
+plt.scatter(rowEx, colEx, marker='x') 
+x_vals = np.linspace(min(rowEx), max(rowEx), 100)
+y_vals = w * x_vals
+plt.plot(x_vals, y_vals, color = "Red")
+plt.xlabel("Car weight (lbs/1000)")
+plt.ylabel("mpg")
+plt.show()
 
 ##################################################################
 # Task 2.2 Comparison one dimension problem without interception #
@@ -45,17 +45,17 @@ for n in range(test):
 
 # Plot results
 
-# plt.scatter(rowEx, colEx, marker='x') 
-# x_vals = np.linspace(min(rowEx), max(rowEx), 100)
+plt.scatter(rowEx, colEx, marker='x') 
+x_vals = np.linspace(min(rowEx), max(rowEx), 100)
 
-# for i, coeff in enumerate(wEx):
-#     y_vals = coeff * x_vals  
-#     plt.plot(x_vals, y_vals, label=f'w{i+1}= {coeff:.3f}')
+for i, coeff in enumerate(wEx):
+    y_vals = coeff * x_vals  
+    plt.plot(x_vals, y_vals, label=f'w{i+1}= {coeff:.3f}')
 
-# plt.legend()
-# plt.xlabel("Standard and Poor's 500 rturn index")
-# plt.ylabel("MSCI Europe index")
-# plt.show()
+plt.legend()
+plt.xlabel("Standard and Poor's 500 rturn index")
+plt.ylabel("MSCI Europe index")
+plt.show()
 
 ####################################################
 # Task 2.3 One dimension problem with interception #
@@ -65,13 +65,13 @@ w0Car, w1Car = oneDimLRMInt(pd.DataFrame({'x': weight, 'y': mpg}))
 
 # Plot results
 
-# plt.scatter(weight, mpg, marker='x') 
-# x_vals = np.linspace(min(weight), max(weight), 100)
-# y_vals = w0Car + (w1Car * x_vals)  
-# plt.plot(x_vals, y_vals, color = "Red")
-# plt.xlabel("Car weight (lbs/1000)")
-# plt.ylabel("mpg")
-# plt.show()
+plt.scatter(weight, mpg, marker='x') 
+x_vals = np.linspace(min(weight), max(weight), 100)
+y_vals = w0Car + (w1Car * x_vals)  
+plt.plot(x_vals, y_vals, color = "Red")
+plt.xlabel("Car weight (lbs/1000)")
+plt.ylabel("mpg")
+plt.show()
 
 ######################################################
 # Task 2.4 Multi dimension problem with interception #
@@ -84,11 +84,16 @@ error = [mpg[i] - predictions[i] for i in range(len(mpg))]
 
 comparison = np.column_stack((mpg, predictions,error))
 
-np.set_printoptions(precision=3, suppress=True)
+# Print results
+print("\n")
 
-# Plot results
+comparison = np.around(comparison, decimals=3)
 
-# print(comparison)
+column_headers = ["MPG", "MPG Prediction", "Error3"]
+comparison_df = pd.DataFrame(comparison, columns=column_headers)
+
+print(comparison_df.to_string(index=False))
+print("\n")
 
 ################################
 # Task 3 Test regression model #
@@ -173,7 +178,19 @@ for i in range(rep):
     for i in range(len(testSetMpg)):
         objTest4 += (testSetMpg[i] - predTest[i])**2
     msetest4.append(objTest4/2)
-    
+
+# Print results
+
 comparison = np.column_stack((msetrain1, msetest1, msetrain3, msetest3, msetrain4, msetest4))
-np.set_printoptions(precision=3, suppress=True)
-print(comparison)
+
+column_headers = ["MSE Train 1", "MSE Test 1", "MSE Train 3", "MSE Test 3", "MSE Train 4", "MSE Test 4"]
+comparison_df = pd.DataFrame(comparison, columns=column_headers)
+
+comparison_df["MSE Train 1"] = comparison_df["MSE Train 1"].map(lambda x: f"{x:.3e}")
+comparison_df["MSE Test 1"] = comparison_df["MSE Test 1"].map(lambda x: f"{x:.3e}")
+comparison_df["MSE Train 3"] = comparison_df["MSE Train 3"].round(3)
+comparison_df["MSE Test 3"] = comparison_df["MSE Test 3"].round(3)
+comparison_df["MSE Train 4"] = comparison_df["MSE Train 4"].round(3)
+comparison_df["MSE Test 4"] = comparison_df["MSE Test 4"].round(3)
+
+print(comparison_df.to_string(index=False))
