@@ -55,7 +55,6 @@ def multiDimLRM (dataset, Win = None):
 
     X = np.column_stack((col1,x,y,z))
 
-
     if Win is None:
         den = np.linalg.pinv(((X.T) @ X))
         num = (X.T) @ t
