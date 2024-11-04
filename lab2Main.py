@@ -2,7 +2,7 @@ import pandas as pd
 import matplotlib.pyplot as plt 
 import numpy as np
 from loadData import loadData
-from oneDimLRM import *
+from linearRegressionFunc import *
 
 ######################
 # Task 1 - Data load #
@@ -90,7 +90,7 @@ print("\n")
 
 comparison = np.around(comparison, decimals=3)
 
-column_headers = ["MPG", "MPG Prediction", "Error"]
+column_headers = ["MPG", "Prediction", "Error"]
 comparison_df = pd.DataFrame(comparison, columns=column_headers)
 
 print(comparison_df.to_string(index=False))
@@ -118,9 +118,9 @@ for i in range(rep):
     objTrainig4 = 0
     objTest4 = 0
 
-    trainingSetIndicesEx = np.random.permutation(len(rowEx))[:round(len(rowEx)*0.15)]
+    trainingSetIndicesEx = np.random.permutation(len(rowEx))[:round(len(rowEx)*0.05)]
     trainingSetEx = dataEx.iloc[trainingSetIndicesEx]
-    trainingSetIndicesCar = np.random.permutation(len(mpg))[:round(len(mpg)*0.15)]
+    trainingSetIndicesCar = np.random.permutation(len(mpg))[:round(len(mpg)*0.05)]
     trainingSetCar = dataCar.iloc[trainingSetIndicesCar]
 
     testSetIndicesEx = np.setdiff1d(np.arange(len(rowEx)), trainingSetIndicesEx)
@@ -183,16 +183,14 @@ for i in range(rep):
 # Print results
 
 comparison = np.column_stack((msetrain1, msetest1, msetrain3, msetest3, msetrain4, msetest4))
-
-
 column_headers = ["MSE Train 1", "MSE Test 1", "MSE Train 3", "MSE Test 3", "MSE Train 4", "MSE Test 4"]
 comparison_df = pd.DataFrame(comparison, columns=column_headers)
 
-# comparison_df["MSE Train 1"] = comparison_df["MSE Train 1"].map(lambda x: f"{x:.3e}")
-# comparison_df["MSE Test 1"] = comparison_df["MSE Test 1"].map(lambda x: f"{x:.3e}")
-# comparison_df["MSE Train 3"] = comparison_df["MSE Train 3"].round(3)
-# comparison_df["MSE Test 3"] = comparison_df["MSE Test 3"].round(3)
-# comparison_df["MSE Train 4"] = comparison_df["MSE Train 4"].round(3)
-# comparison_df["MSE Test 4"] = comparison_df["MSE Test 4"].round(3)
+comparison_df["MSE Train 1"] = comparison_df["MSE Train 1"].map(lambda x: f"{x:.2e}")
+comparison_df["MSE Test 1"] = comparison_df["MSE Test 1"].map(lambda x: f"{x:.2e}")
+comparison_df["MSE Train 3"] = comparison_df["MSE Train 3"].round(2)
+comparison_df["MSE Test 3"] = comparison_df["MSE Test 3"].round(2)
+comparison_df["MSE Train 4"] = comparison_df["MSE Train 4"].round(2)
+comparison_df["MSE Test 4"] = comparison_df["MSE Test 4"].round(2)
 
 print(comparison_df.to_string(index=False))
